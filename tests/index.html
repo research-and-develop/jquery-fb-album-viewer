@@ -8,10 +8,7 @@
     </head>
     <body>
 
-        <div style="max-width: 820px; margin: 0px auto;"> 
-            <div id="fb-album"></div>
-        </div>
-
+        <div id="fb-album"></div>
 
         <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
         <script src="../dist/jquery.fb.album.viewer.min.js" type="text/javascript"></script> 
@@ -24,6 +21,7 @@
                 /* Valid albumId and accessToken are mandatory */
 
                 $("#fb-album").FacebookAlbumViewer({
+                	account: 'Your Facebook Account Here',
                     albumId: 'Your Facebook Album ID Here  ...',
                     accessToken: 'Your Access Token Here ...'  
                 });
