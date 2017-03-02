@@ -1,5 +1,5 @@
 /*
- * https://github.com/research-and-develop/
+ * https://github.com/research-and-develop/jquery-fb-album-viewer
  * Released under the MIT license
  */
 
@@ -11,7 +11,7 @@
             API_URL: 'https://graph.facebook.com/',
             FIELDS: ['id', 'created_time', 'from', 'height', 'icon', 'images', 'link', 'name', 'picture', 'updated_time', 'width', 'source'],
             TMPL_IMG:
-                    '<div class="col-xxs-12 col-lg-3 col-md-3 col-sm-4 col-xs-6">' +
+                    '<div class="fav-col fav-xxs-12 fav-lg-3 fav-md-3 fav-sm-4 fav-xs-6">' +
                     '   <div class="image-wrapper" id="[@img-id@]">' +
                     '      <a target="_blank" href="[@img-href@]">' +
                     '         <img src="[@img-url@]" class="fb-album-viewer-img">' +
@@ -35,11 +35,12 @@
         };
 
         var defaults = {
-            account: "stylem.varna",
+            account: "",
             accessToken: "",
             albumId: "",
             showLikes: false,
-            debug: false
+            debug: false,
+            containerWidth: 820
         };
 
         var
@@ -48,18 +49,19 @@
 
 
         var style = '<style type="text/css" id="' + c.STYLE_ID + '">';
+        style += '.fb-album-viewer-wrapper{margin-right: -15px; margin-left: -15px;}.fb-album-viewer-wrapper:before,.fb-album-viewer-wrapper:after{display: table;content: " ";}.fb-album-viewer-wrapper:after{clear: both;}';
+        style += '.fav-col{position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;}';
         style += '.likes-box { background-color: rgba(0, 0, 0, 0.5); color: white; position: absolute; left: 5px; bottom: 10px; padding: 0px 5px; z-index: 2; font-size: 12px; display: block; border-radius: 3px;}';
         style += '.likes{color:white;}';
         style += '.fb-album-viewer-img{position: absolute; top: -9999px; left: -9999px; right: -9999px; bottom: -9999px; margin: auto;}';
-        style += '.image-wrapper{position: relative; overflow: hidden; margin:5px auto;}';
-        style += ' @media (max-width: 9999px) { .image-wrapper{width: 200px; height: 200px;} }';
-        style += ' @media (max-width: 1200px) { .image-wrapper{width: 200px; height: 200px;} }';
-        style += ' @media (max-width: 992px)  { .image-wrapper{width: 250px; height: 250px;} .likes-box { bottom: 15px;} }';
-        style += ' @media (max-width: 768px) { .image-wrapper{width: 320px; height: 320px;} .likes-box { bottom: 50px;} }';
-        style += ' @media (max-width: 640px) { .image-wrapper{width: 300px; height: 300px;} .likes-box { bottom: 40px;} }';
-        style += ' @media (max-width: 600px) { .image-wrapper{width: 270px; height: 270px;} .likes-box { bottom: 30px;} }';
-        style += ' @media (max-width: 550px) { .image-wrapper{width: 260px; height: 260px;} .likes-box { bottom: 20px;} }';
-        style += ' @media (max-width: 500px) { .image-wrapper{width: 320px; height: 320px;} .col-xxs-12{width: 100%;} .likes-box { bottom: 55px;} }';
+        style += '.image-wrapper{position: relative; overflow: hidden; margin:5px auto;}.image-wrapper img{max-width: none;}';
+        style += '.fav-xs-1,.fav-xs-2,.fav-xs-3,.fav-xs-4,.fav-xs-5,.fav-xs-6,.fav-xs-7,.fav-xs-8,.fav-xs-9,.fav-xs-10,.fav-xs-11,.fav-xs-12{float: left;}.fav-xs-12{width: 100%;}.fav-xs-11 {width: 91.66666667%;}.fav-xs-10 {width: 83.33333333%;}.fav-xs-9 {width: 75%;}.fav-xs-8 {width: 66.66666667%;}.fav-xs-7 {width: 58.33333333%;}.fav-xs-6 {width: 50%;}.fav-xs-5 {width: 41.66666667%;}.fav-xs-4 {width: 33.33333333%;}.fav-xs-3 {width: 25%;}.fav-xs-2 {width: 16.66666667%;}.fav-xs-1 {width: 8.33333333%;}';
+        style += ' @media (min-width: 550px) { .image-wrapper{width: 260px; height: 260px;} .likes-box { bottom: 20px;} }';
+        style += ' @media (min-width: 600px) { .image-wrapper{width: 280px; height: 280px;} .likes-box { bottom: 30px;} }';
+        style += ' @media (min-width: 640px) { .image-wrapper{width: 330px; height: 330px;} .likes-box { bottom: 40px;} }';
+        style += ' @media (min-width: 768px) { .image-wrapper{width: 260px; height: 200px;} .likes-box { bottom: 50px;}.fav-sm-1, .fav-sm-2, .fav-sm-3, .fav-sm-4, .fav-sm-5, .fav-sm-6, .fav-sm-7, .fav-sm-8, .fav-sm-9, .fav-sm-10, .fav-sm-11, .fav-sm-12 {float: left;}.fav-sm-12 {width: 100%;}.fav-sm-11 {width: 91.66666667%;}.fav-sm-10{width: 83.33333333%;} .fav-sm-9 {width: 75%;}.fav-sm-8{width: 66.66666667%;}.fav-sm-7{width: 58.33333333%;}.fav-sm-6{width: 50%;}.fav-sm-5{width: 41.66666667%;}.fav-sm-4{width: 33.33333333%;}.fav-sm-3{width: 25%;}.fav-sm-2{width: 16.66666667%;}.fav-sm-1{width: 8.33333333%;}}';
+        style += ' @media (min-width: 1200px) {.image-wrapper{width: 200px; height: 200px;}.fav-lg-1, .fav-lg-2, .fav-lg-3, .fav-lg-4, .fav-lg-5, .fav-lg-6, .fav-lg-7, .fav-lg-8, .fav-lg-9, .fav-lg-10, .fav-lg-11, .fav-lg-12 {float: left;}.fav-lg-12 {width: 100%;}.fav-lg-11 {width: 91.66666667%;}.fav-lg-10{width: 83.33333333%;}.fav-lg-9 {width: 75%;}.fav-lg-8{width: 66.66666667%;}.fav-lg-7{width: 58.33333333%;}.fav-lg-6{width: 50%;}.fav-lg-5{width: 41.66666667%;}.fav-lg-4{width: 33.33333333%;}.fav-lg-3{width: 25%;}.fav-lg-2{width: 16.66666667%;}.fav-lg-1{width: 8.33333333%;}}';
+        style += ' @media (max-width: 549px) { .image-wrapper{width: 320px; height: 320px;} .likes-box { bottom: 55px;} .fav-xxs-12{width: 100%;} }';
         style += '</style>';
 
         /**
@@ -93,7 +95,7 @@
          */
         var requestAlbumPhotos = function _requestAlbumPhotos() {
 
-        	/* cannot proceed if there is no albumId specified */
+            /* cannot proceed if there is no albumId specified */
             if (!settings.accessToken.length) {
                 console.error("accessToken is missing cannot proceed ...");
                 return;
@@ -145,8 +147,8 @@
 
             }
 
-            albumContainer.html('<div class="row">' + photosHtml + '</div>');
-            
+            albumContainer.html('<div class="fb-album-viewer-wrapper">' + photosHtml + '</div>');
+
             if (settings.showLikes) {
                 /* update likes */
                 for (var i = 0; i < photosData.length; i++) {
@@ -178,6 +180,12 @@
 
         applyStyle();
         requestAlbumPhotos();
+
+        // apply container style
+        albumContainer.css({
+            'max-width': settings.containerWidth,
+            'margin': '0px auto'
+        });
 
         return albumContainer;
     };
