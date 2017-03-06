@@ -52,7 +52,7 @@
 
         var style = '<style type="text/css" id="' + c.STYLE_ID + '">';
         style += '.fav-img-fixed{float: left; padding:0px 5px;}';
-        style += '.fb-album-viewer-wrapper{margin-right: -15px; margin-left: -15px;}.fb-album-viewer-wrapper:before,.fb-album-viewer-wrapper:after{display: table;content: " ";}.fb-album-viewer-wrapper:after{clear: both;}';
+        style += '.fb-album-viewer-wrapper:before,.fb-album-viewer-wrapper:after{display: table;content: " ";}.fb-album-viewer-wrapper:after{clear: both;}';
         style += '.fav-col{position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;}';
         style += '.likes-box { background-color: rgba(0, 0, 0, 0.5); color: white; position: absolute; left: 5px; bottom: 10px; padding: 0px 5px; z-index: 2; font-size: 12px; display: block; border-radius: 3px;}';
         style += '.likes{color:white;}';
@@ -60,7 +60,7 @@
         style += '.image-wrapper{position: relative; overflow: hidden; margin:5px auto;}.image-wrapper img{max-width: none;}';
 
         style += '.fav-xs-1,.fav-xs-2,.fav-xs-3,.fav-xs-4,.fav-xs-5,.fav-xs-6,.fav-xs-7,.fav-xs-8,.fav-xs-9,.fav-xs-10,.fav-xs-11,.fav-xs-12{float: left;}.fav-xs-12{width: 100%;}.fav-xs-11 {width: 91.66666667%;}.fav-xs-10 {width: 83.33333333%;}.fav-xs-9 {width: 75%;}.fav-xs-8 {width: 66.66666667%;}.fav-xs-7 {width: 58.33333333%;}.fav-xs-6 {width: 50%;}.fav-xs-5 {width: 41.66666667%;}.fav-xs-4 {width: 33.33333333%;}.fav-xs-3 {width: 25%;}.fav-xs-2 {width: 16.66666667%;}.fav-xs-1 {width: 8.33333333%;}';
-        style += '.image-wrapper{width: 200px; height: 200px;}';
+        style += '.image-wrapper{width: 190px; height: 190px;}';
         //style += ' @media (min-width: 550px) { .image-wrapper{width: 260px; height: 260px;} .likes-box { bottom: 20px;} }';
         //style += ' @media (min-width: 600px) { .image-wrapper{width: 280px; height: 280px;} .likes-box { bottom: 30px;} }';
         //style += ' @media (min-width: 640px) { .image-wrapper{width: 330px; height: 330px;} .likes-box { bottom: 40px;} }';
