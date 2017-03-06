@@ -54,7 +54,7 @@
         style += '.fav-img-fixed{float: left; padding:0px 5px;}';
         style += '.fb-album-viewer-wrapper:before,.fb-album-viewer-wrapper:after{display: table;content: " ";}.fb-album-viewer-wrapper:after{clear: both;}';
         style += '.fav-col{position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;}';
-        style += '.likes-box { background-color: rgba(0, 0, 0, 0.5); color: white; position: absolute; left: 5px; bottom: 10px; padding: 0px 5px; z-index: 2; font-size: 12px; display: block; border-radius: 3px;}';
+        style += '.likes-box { background-color: rgba(0, 0, 0, 0.5); color: white; position: absolute; left: 5px; bottom: 10px; padding: 0px 5px; z-index: 1; font-size: 12px; display: block; border-radius: 3px;}';
         style += '.likes{color:white;}';
         style += '.fb-album-viewer-img{position: absolute; top: -9999px; left: -9999px; right: -9999px; bottom: -9999px; margin: auto;}';
         style += '.image-wrapper{position: relative; overflow: hidden; margin:5px auto;}.image-wrapper img{max-width: none;}';
@@ -189,30 +189,37 @@
         var jsApplySize = function _jsApplySize() {
 
             var winW = $(window).width();
+            winW = winW > settings.containerWidth ? settings.containerWidth : winW;
+            var img = albumContainer.find('.image-wrapper').first();
+            var imgWidth = img.width();
+            var imgPadding = parseFloat(img.parent().css('paddingLeft')) + parseFloat(img.parent().css('paddingRight'));
+            var imgsOnRow = Math.floor(winW / (imgWidth + imgPadding) );
+            var wrapperW = imgWidth * imgsOnRow + imgPadding * imgsOnRow;
+
+            imgsWrapper.css({
+                'width': wrapperW + 'px',
+                'margin':' 0px auto'
+            });
 
             if (winW < settings.containerWidth) {
-                var img = albumContainer.find('.image-wrapper').first();
-                var imgWidth = img.width();
-                var imgPadding = parseFloat(img.parent().css('paddingLeft')) + parseFloat(img.parent().css('paddingRight'));
-                
-                var imgsOnRow = Math.floor(winW / (imgWidth + imgPadding) );
-                var padding = (winW - (imgWidth * imgsOnRow + imgPadding * imgsOnRow)) / 2;
+
+                var padding = (winW - wrapperW) / 2;
+
+                if (imgsOnRow < 4) {
+                    albumContainer.css({
+                        'paddingLeft' : padding,
+                        'paddingRight': padding
+                    });
+                }else{
+                    albumContainer.css({
+                        'paddingLeft' : '',
+                        'paddingRight': ''
+                    });
+                }
 
                 if (winW <= 400) {
                     albumContainer.css('width', '100%').find('.image-wrapper').parent().removeClass('fav-img-fixed');
                 } else {
-
-                    if (imgsOnRow < 4) {
-                        albumContainer.css({
-                            'paddingLeft' : padding,
-                            'paddingRight': padding
-                        });
-                    }else{
-                        albumContainer.css({
-                            'paddingLeft' : '',
-                            'paddingRight': ''
-                        });
-                    }
 
                     var imgWarapperParents = albumContainer.find('.image-wrapper').parent();
                     if (!imgWarapperParents.hasClass('fav-img-fixed')) {
@@ -222,9 +229,9 @@
                     albumContainer.css('width', '');
                 }
             } else {
-                imgsWrapper.removeAttr('style');
                 albumContainer.css({'paddingLeft':'','paddingRight': ''});
             }
+
         };
 
         var debugLog = function _log(message) {
