@@ -1,33 +1,39 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>Facebook Album Viewer</title>
+<head>
+	<meta charset='utf-8'>
+	<title>Facebook Album Viewer</title>
 
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-    </head>
-    <body>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+</head>
+<body>
 
-        <div id="fb-album"></div>
+	<div id="fb-album"></div>
 
-        <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-        <script src="../dist/jquery.fb.album.viewer.min.js" type="text/javascript"></script> 
-        <script type="text/javascript">
+<!-- NOTE:
+	If running on a web server you should change following lines to
+	<script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+	<script src="//rawgit.com/research-and-develop/jquery-fb-album-viewer/master/dist/jquery.fb.album.viewer.min.js" type="text/javascript"></script>
+	To avoid "Blocked loading mixed active content" error we should use relative portocols 
+ -->
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+	<script src="../dist/jquery.fb.album.viewer.min.js" type="text/javascript"></script> 
+	<script type="text/javascript">
 
-            $.noConflict();
+		$.noConflict();
 
-            jQuery(document).ready(function ($) {
+		jQuery(document).ready(function ($) {
 
-                /* Valid albumId and accessToken are mandatory */
+			/* Valid albumId and accessToken are mandatory */
 
-                $("#fb-album").FacebookAlbumViewer({
-                	account: 'Your Facebook Account Here',
-                    albumId: 'Your Facebook Album ID Here  ...',
-                    accessToken: 'Your Access Token Here ...'  
-                });
+			$("#fb-album").FacebookAlbumViewer({
+				account: 'Your Facebook Account Here',
+				albumId: 'Your Facebook Album ID Here  ...',
+				accessToken: 'Your Access Token Here ...'  
+			});
 
-            });
-        </script>
+		});
+	</script>
 
-    </body>
+</body>
 </html>
