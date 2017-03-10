@@ -34,7 +34,7 @@
             TAG_LIKES: '[@likes-box@]',
             TAG_IMG_STYLE: '[@img-style@]',
             IMG_W: '[@img-width@]',
-            IMG_H: '[@img-height@]',
+            IMG_H: '[@img-height@]'
         };
 
         var defaults = {
@@ -47,7 +47,7 @@
             imgFixedWidth: true,
             imgWidth: 190,
             imgHeight: 190,
-            limit:0
+            limit:100
         };
 
         var
