@@ -158,9 +158,9 @@
                 .replace(c.TAG_LIKES, settings.showLikes ? c.TMPL_LIKES_BOX : '');
 
                 if (imgData.width < settings.imgWidth || imgData.height < settings.imgHeight) {
-                	imgHtml.replace(c.TAG_IMG_STYLE, 'style="object-fit: cover;width: 100%;height: 100%;"');
+                	imgHtml = imgHtml.replace(c.TAG_IMG_STYLE, 'style="object-fit: cover;width: 100%;height: 100%;"');
                 } else {
-                	imgHtml.replace(c.TAG_IMG_STYLE, '');
+                	imgHtml = imgHtml.replace(c.TAG_IMG_STYLE, '');
                 }     
 
                 photosHtml += imgHtml;
