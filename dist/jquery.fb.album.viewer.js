@@ -14,7 +14,7 @@
             '<div class="fav-col fav-xxs-12 fav-lg-3 fav-md-3 fav-sm-4 fav-xs-6">' +
             '   <div class="image-wrapper" id="[@img-id@]">' +
             '      <a target="_blank" href="[@img-href@]">' +
-            '         <img src="[@img-url@]" class="fb-album-viewer-img">' +
+            '         <img src="[@img-url@]" class="fb-album-viewer-img" [@img-style@]>' +
             '      </a>' +
             '      [@likes-box@]' +
             '   </div>' +
@@ -31,7 +31,10 @@
             TAG_IMG_HREF: '[@img-href@]',
             TAG_IMG_ID: '[@img-id@]',
             TAG_IMG_URL: '[@img-url@]',
-            TAG_LIKES: '[@likes-box@]'
+            TAG_LIKES: '[@likes-box@]',
+            TAG_IMG_STYLE: '[@img-style@]',
+            IMG_W: '[@img-width@]',
+            IMG_H: '[@img-height@]',
         };
 
         var defaults = {
@@ -41,7 +44,9 @@
             showLikes: false,
             debug: false,
             containerWidth: 820,
-            imgFixedWidth: true
+            imgFixedWidth: true,
+            imgWidth: 190,
+            imgHeight: 190
         };
 
         var
@@ -60,7 +65,7 @@
         style += '.image-wrapper{position: relative; overflow: hidden; margin:5px auto;}.image-wrapper img{max-width: none;}';
 
         style += '.fav-xs-1,.fav-xs-2,.fav-xs-3,.fav-xs-4,.fav-xs-5,.fav-xs-6,.fav-xs-7,.fav-xs-8,.fav-xs-9,.fav-xs-10,.fav-xs-11,.fav-xs-12{float: left;}.fav-xs-12{width: 100%;}.fav-xs-11 {width: 91.66666667%;}.fav-xs-10 {width: 83.33333333%;}.fav-xs-9 {width: 75%;}.fav-xs-8 {width: 66.66666667%;}.fav-xs-7 {width: 58.33333333%;}.fav-xs-6 {width: 50%;}.fav-xs-5 {width: 41.66666667%;}.fav-xs-4 {width: 33.33333333%;}.fav-xs-3 {width: 25%;}.fav-xs-2 {width: 16.66666667%;}.fav-xs-1 {width: 8.33333333%;}';
-        style += '.image-wrapper{width: 190px; height: 190px;}';
+        style += '.image-wrapper{width: ' + c.IMG_W + 'px; height: ' + c.IMG_H + 'px;}';
         //style += ' @media (min-width: 550px) { .image-wrapper{width: 260px; height: 260px;} .likes-box { bottom: 20px;} }';
         //style += ' @media (min-width: 600px) { .image-wrapper{width: 280px; height: 280px;} .likes-box { bottom: 30px;} }';
         //style += ' @media (min-width: 640px) { .image-wrapper{width: 330px; height: 330px;} .likes-box { bottom: 40px;} }';
@@ -88,7 +93,8 @@
 
             if (!styleExists) {
                 /* if there isn't plugin's style add it to head */
-                $(style).appendTo('head');
+
+                $(style.replace(c.IMG_W, settings.imgWidth).replace(c.IMG_H, settings.imgHeight)).appendTo('head');
             }
         };
 
@@ -143,13 +149,21 @@
             for (var i = 0; i < photosData.length; i++) {
 
                 var current = photosData[i];
+                var imgData = current.images[current.images.length - 1];
 
-                photosHtml += c.TMPL_IMG
+                var imgHtml = c.TMPL_IMG
                 .replace(c.TAG_IMG_HREF, current.link)
                 .replace(c.TAG_IMG_ID, current.id)
-                .replace(c.TAG_IMG_URL, current.images[current.images.length - 1].source)
+                .replace(c.TAG_IMG_URL, imgData.source)
                 .replace(c.TAG_LIKES, settings.showLikes ? c.TMPL_LIKES_BOX : '');
 
+                if (imgData.width < settings.imgWidth || imgData.height < settings.imgHeight) {
+                	imgHtml.replace(c.TAG_IMG_STYLE, 'style="object-fit: cover;width: 100%;height: 100%;"');
+                } else {
+                	imgHtml.replace(c.TAG_IMG_STYLE, '');
+                }     
+
+                photosHtml += imgHtml;
             }
 
             albumContainer.html('<div class="fb-album-viewer-wrapper">' + photosHtml + '</div>');
