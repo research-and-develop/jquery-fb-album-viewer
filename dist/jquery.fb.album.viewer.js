@@ -46,7 +46,8 @@
             containerWidth: 820,
             imgFixedWidth: true,
             imgWidth: 190,
-            imgHeight: 190
+            imgHeight: 190,
+            limit:0
         };
 
         var
@@ -118,7 +119,7 @@
                 return;
             }
 
-            var url = c.API_URL + settings.albumId + '/' + 'photos?access_token=' + settings.accessToken + '&fields=' + c.FIELDS.join(',');
+            var url = c.API_URL + settings.albumId + '/' + 'photos?limit=' + settings.limit + '&access_token=' + settings.accessToken + '&fields=' + c.FIELDS.join(',');
 
             /* make HTTP request */
             get(url).then(function (data, textStatus, jqXHR) {
